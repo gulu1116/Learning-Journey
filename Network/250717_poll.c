@@ -90,7 +90,7 @@ int main() {
         }
 
         // 通信，有客户端发送数据过来
-        for (int i = sockfd; i <= maxfd; i++) {
+        for (int i = sockfd + 1; i <= maxfd; i++) {
             if (fds[i].revents & POLLIN) {
                 char buffer[128] = {0};
                 int count = recv(i, buffer, sizeof(buffer), 0);
