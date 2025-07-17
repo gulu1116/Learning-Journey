@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <pthread.h>
+#include <sys/select.h>
 
 // 客户端处理线程函数：收发数据
 void *client_thread(void *arg) {
@@ -54,20 +55,42 @@ int main() {
         return -1;
     }
 
-    // 5. 循环接收客户端连接
-    while (1) {
 
-        struct sockaddr_in clientaddr;
-        socklen_t len = sizeof(clientaddr);
-        int clientfd = accept(sockfd, (struct sockaddr *)&clientaddr, &len);
-        if (clientfd == -1) {
-            perror("accept");
-            return -1;
+    // 5. 初始化要检测的文件描述符集合
+    fd_set rfds, rset;
+    FD_ZERO(&rfds);
+    FD_SET(sockfd, &rfds);
+
+    int maxfd = sockfd;
+
+    while (1) {
+        rset = rfds;  // 复制集合，以便 select 修改
+        int nready = select(maxfd + 1, &rset, NULL, NULL, NULL);
+
+        if (FD_ISSET(sockfd, &rset)) {
+            int clientfd = accept(sockfd, NULL, NULL);
+            FD_SET(clientfd, &rfds);
+            maxfd = (clientfd > maxfd) ? clientfd : maxfd;
         }
 
-        // 6. 创建线程处理客户端连接
-        pthread_t thid;
-        pthread_create(&thid, NULL, client_thread, &clientfd);
+        for (int i = sockfd + 1; i <= maxfd; i++) {
+            if (FD_ISSET(i, &rset)) {
+                char buffer[1024] = {0};
+                //memset(buf, 0, sizeof(buf));
+                int count = recv(i, buffer, sizeof(buffer), 0);
+                if (count == -1) {
+                    perror("recv");
+                    break;
+                } else if (count == 0) {
+                    printf("Client disconnected\n");
+                    close(i);
+                    FD_CLR(i, &rfds);
+                } else {
+                    send(i, buffer, count, 0);
+                    printf("Received %d bytes: %s\n", count, buffer);
+                }
+            }
+        }
     }
 
     return 0;
