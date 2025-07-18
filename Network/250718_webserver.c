@@ -7,6 +7,9 @@
 #include <fcntl.h>
 #include <errno.h>
 
+#define ENABLE_HTTP_RESPONSE 1
+
+
 #define BUFFER_LENGTH 1024
 
 typedef int (*event_callback)(int fd);
@@ -35,6 +38,40 @@ struct conn_item {
 struct conn_item connlist[1024] = {0};
 
 int epfd = 0;  // 全局变量，epoll文件描述符
+
+
+#if ENABLE_HTTP_RESPONSE
+
+typedef struct conn_item connection_t;
+
+int http_request(connection_t *c) {
+
+	//printf("request: %s\n", c->rbuffer);
+
+	memset(c->wbuffer, 0, BUFFER_LENGTH);
+	c->wlen = 0;
+
+}
+
+int http_response(connection_t *conn) {
+
+#if 1
+    conn->wlen = sprintf(conn->wbuffer, 
+        "HTTP/1.1 200 OK\r\n"
+		"Content-Type: text/html\r\n"
+		"Accept-Ranges: bytes\r\n"
+		"Content-Length: 82\r\n"
+		"Date: Tue, 30 Apr 2024 13:16:46 GMT\r\n\r\n"
+		"<html><head><title>Gdpu.GuLu</title></head><body><h1>Hello, GuLu</h1></body></html>\r\n\r\n");
+#else
+
+#endif
+
+    return conn->wlen;
+}
+
+#endif 
+
 
 // flag == 1  add
 // flag == 0  modify
@@ -102,7 +139,7 @@ int recv_cb(int fd) {
     connlist[fd].rlen += count;  // 更新索引
     printf("Received %d bytes: %s\n", count, buffer);
 
-#if 1
+#if 0
     memcpy(connlist[fd].wbuffer, buffer, connlist[fd].rlen);  // 将接收到的数据复制到发送缓冲区
     connlist[fd].wlen = connlist[fd].rlen;  //
 #else
