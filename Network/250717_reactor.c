@@ -19,6 +19,25 @@ struct conn_item connlist[1024] = {0};
 
 int epfd = 0;  // 全局变量，epoll文件描述符
 
+// flag == 1  add
+// flag == 0  modify
+int set_event(int fd, int event, int flag) {
+
+    if (flag) {
+        struct epoll_event ev;
+        ev.events = event;
+        ev.data.fd = fd;
+        epoll_ctl(epfd, EPOLL_CTL_ADD, fd, &ev);
+    } else {
+        struct epoll_event ev;
+        ev.events = event;
+        ev.data.fd = fd;
+        epoll_ctl(epfd, EPOLL_CTL_MOD, fd, &ev);
+    }
+}
+
+
+
 // listenfd
 // 触发EPOLLIN
 int accept_cb(int fd) {
@@ -30,11 +49,7 @@ int accept_cb(int fd) {
         return -1;
     }
 
-    struct epoll_event ev;
-    ev.events = EPOLLIN;
-    ev.data.fd = clientfd;
-    // 将客户端套接字添加到epoll模型
-    epoll_ctl(epfd, EPOLL_CTL_ADD, clientfd, &ev);
+    set_event(clientfd, EPOLLIN , 1);
 
     connlist[clientfd].fd = clientfd;  // 初始化连接项
     memset(connlist[clientfd].buffer, 0, BUFFER_LENGTH);
@@ -69,10 +84,7 @@ int recv_cb(int fd) {
 
     // 如果接收到了数据，修改事件为可写
     // 这里假设我们只在接收到数据后才允许发送数据
-    struct epoll_event ev;
-    ev.events = EPOLLOUT;
-    ev.data.fd = fd;
-    epoll_ctl(epfd, EPOLL_CTL_MOD, fd, &ev);
+    set_event(fd, EPOLLOUT , 0);
 
     return count;  // 返回接收的字节数
 }
@@ -89,10 +101,7 @@ int send_cb(int fd) {
     printf("Sent %d bytes: %s\n", count,buffer);
 
     // 发送完数据后，修改事件为可读
-    struct epoll_event ev;
-    ev.events = EPOLLIN;  
-    ev.data.fd = fd;
-    epoll_ctl(epfd, EPOLL_CTL_MOD, fd, &ev);
+    set_event(fd, EPOLLIN , 0);
 
     return count;
 }
