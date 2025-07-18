@@ -9,10 +9,27 @@
 
 #define BUFFER_LENGTH 1024
 
+typedef int (*event_callback)(int fd);
+
+// listenfd ---> accept_cb
+int accept_cb(int fd);
+// clientfd ---> recv_cb, send_cb
+int recv_cb(int fd);
+int send_cb(int fd);
+
 struct conn_item {
     int fd;
-    char buffer[BUFFER_LENGTH];
-    int idx;  //
+
+    char rbuffer[BUFFER_LENGTH];
+    int rlen;
+    char wbuffer[BUFFER_LENGTH];
+    int wlen;
+
+    union {
+        event_callback accept_callback;  // 接收回调函数
+        event_callback recv_callback;    // 接收回调函数
+    } recv_type;
+    event_callback send_callback;    // 发送回调函数
 };
 
 struct conn_item connlist[1024] = {0};
@@ -28,6 +45,7 @@ int set_event(int fd, int event, int flag) {
         ev.events = event;
         ev.data.fd = fd;
         epoll_ctl(epfd, EPOLL_CTL_ADD, fd, &ev);
+        
     } else {
         struct epoll_event ev;
         ev.events = event;
@@ -52,16 +70,20 @@ int accept_cb(int fd) {
     set_event(clientfd, EPOLLIN , 1);
 
     connlist[clientfd].fd = clientfd;  // 初始化连接项
-    memset(connlist[clientfd].buffer, 0, BUFFER_LENGTH);
-    connlist[clientfd].idx = 0;  // 初始化索引
+    memset(connlist[clientfd].rbuffer, 0, BUFFER_LENGTH);
+    memset(connlist[clientfd].wbuffer, 0, BUFFER_LENGTH);
+    connlist[clientfd].rlen = 0;
+    connlist[clientfd].wlen = 0;
+    connlist[clientfd].recv_type.recv_callback = recv_cb;      // 设置接收回
+    connlist[clientfd].send_callback = send_cb;      // 设置发送回调函数
 
     return clientfd;
 }
 
 // clientfd
 int recv_cb(int fd) {
-    char *buffer = connlist[fd].buffer;
-    int idx = connlist[fd].idx;
+    char *buffer = connlist[fd].rbuffer;
+    int idx = connlist[fd].rlen;
     
     int count = recv(fd, buffer + idx, BUFFER_LENGTH - idx, 0);
     if (count == -1) {
@@ -77,21 +99,23 @@ int recv_cb(int fd) {
         return 0;  // 客户端断开连接
     } 
 
-    connlist[fd].idx += count;  // 更新索引
+    connlist[fd].rlen += count;  // 更新索引
     printf("Received %d bytes: %s\n", count, buffer);
 
-    // send(fd, buffer, idx, count);
+#if 1
+    memcpy(connlist[fd].wbuffer, buffer, connlist[fd].rlen);  // 将接收到的数据复制到发送缓冲区
+    connlist[fd].wlen = connlist[fd].rlen;  //
+#endif
 
     // 如果接收到了数据，修改事件为可写
-    // 这里假设我们只在接收到数据后才允许发送数据
     set_event(fd, EPOLLOUT , 0);
 
     return count;  // 返回接收的字节数
 }
 
 int send_cb(int fd) {
-    char *buffer = connlist[fd].buffer;
-    int idx = connlist[fd].idx;
+    char *buffer = connlist[fd].wbuffer;
+    int idx = connlist[fd].wlen;
     int count = send(fd, buffer, idx, 0);
     if (count == -1) {
         perror("send");
@@ -126,6 +150,9 @@ int main() {
         return -1;
     }
 
+    connlist[sockfd].fd = sockfd;  // 初始化监听套接字连接项
+    connlist[sockfd].recv_type.accept_callback = accept_cb;  // 设置接收回调函数
+
     // 4. 开始监听（最大等待队列长度为10）
     ret = listen(sockfd, 10);
     if (ret == -1) {
@@ -141,14 +168,7 @@ int main() {
     }
 
     // 6. 将要检测的节点添加到epoll模型中
-    struct epoll_event ev;
-    ev.events = EPOLLIN;  // 监听读事件
-    ev.data.fd = sockfd;  // 将监听套接字添加到epoll模型
-    ret = epoll_ctl(epfd, EPOLL_CTL_ADD, sockfd, &ev);
-    if (ret == -1) {
-        perror("epoll_ctl");
-        return -1;
-    }
+    set_event(sockfd, EPOLLIN, 1);  // 监听套接字，触发EPOLLIN事件
 
     // 7. 不停地委托内核检测epoll模型中的文件描述符状态
     struct epoll_event events[1024];
@@ -157,22 +177,14 @@ int main() {
         for (int i = 0; i < nready; i++) {
             int curfd = events[i].data.fd;
 
-            // 如果是监听套接字，说明有新连接
-            if (curfd == sockfd) {
+            if (events[i].events & EPOLLIN) {
 
-                int clientfd = accept_cb(sockfd);
+                int count = connlist[curfd].recv_type.recv_callback(curfd);
+            }
 
-            } else {
-
-                if (events[i].events & EPOLLIN) {  //通信
-                    // 调用接收回调函数
-                    int count = recv_cb(curfd);
-                }
-
-                if (events[i].events & EPOLLOUT) {
-                    // 调用发送回调函数
-                    int count = send_cb(curfd);
-                }
+            if (events[i].events & EPOLLOUT) {
+                
+                int count = connlist[curfd].send_callback(curfd);
             }
         }
     }
