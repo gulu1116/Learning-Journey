@@ -6,29 +6,6 @@
 #include <sys/select.h>
 #include <sys/epoll.h>
 
-// 客户端处理线程函数：收发数据
-void *client_thread(void *arg) {
-
-    int clientfd = *(int *)arg;  // 获取客户端连接的 socket
-
-    while (1) {
-
-        char buffer[1024] = {0};
-        int count = recv(clientfd, buffer, sizeof(buffer), 0);
-        if (count == -1) {
-            perror("recv");
-            // return -1;
-        } else if (count == 0) {
-            printf("Client disconnected\n");
-            break;
-        } 
-        
-        send(clientfd, buffer, count, 0);
-        printf("Received %d bytes: %s\n", count, buffer);
-    }
-
-    close(clientfd);
-}
 
 int main() {
     // 1. 创建 socket（监听套接字）
