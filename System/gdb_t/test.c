@@ -43,9 +43,9 @@ int main(int argc, char *argv[])
 {
     int arr[N];
     // char *p = "hellod";
-    // 当前 p 指向字符串常量，直接修改会报错
+    // // 当前 p 指向字符串常量，直接修改会报错
     // p[3] = 'M'; 
-    // printf("%s %s %s\n", argv[1], argv[2], argv[3]);
+    printf("%s %s %s\n", argv[1], argv[2], argv[3]);
 
     srand(time(NULL));
 
