@@ -1,28 +1,23 @@
-# 源文件和目标文件
-src = $(wildcard *.c)				
-obj = $(patsubst %.c, %.o, $(src)) 
+# 源文件列表
+src = $(wildcard *.c)
 
-# 目标程序名
-target = app
+# 目标程序：每个源文件去掉 .c 后缀
+target = $(basename $(src))
 
 # 编译器和编译选项
 CC = gcc
 CFLAGS = -Wall -g
 
-# 默认目标
-ALL:$(target)
+# 默认目标：编译所有可执行文件
+ALL: $(target)
 
-# 生成最终可执行文件
-$(target):$(obj)
-	$(CC) $(CFLAGS) $^ -o $@
+# 每个 .c 文件编译成无后缀的可执行文件
+%: %.c
+	$(CC) $(CFLAGS) $< -o $@
 
-# 编译每个 .c 文件为 .o 文件
-$(obj):%.o:%.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-# 清理目标
+# 清理所有生成的文件
 clean:
-	-rm -rf $(obj) $(target)
+	-rm -f $(target)
 
 # 声明伪目标
-.PHONY:clean ALL
+.PHONY: ALL clean
