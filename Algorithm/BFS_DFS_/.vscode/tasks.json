@@ -1,0 +1,96 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "C/C++: 编译当前文件",
+            "type": "shell",
+            "command": "/usr/bin/sh",
+            "args": [
+                "-c",
+                "if [[ ${fileBasename} == *.cpp ]]; then compiler='g++'; else compiler='gcc'; fi; ${compiler} -g -pthread \"${file}\" -o \"${workspaceFolder}/bin/${fileBasenameNoExtension}\" && chmod +x \"${fileDirname}/${fileBasenameNoExtension}\""
+            ],
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "编译当前打开的 C/C++ 文件",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true, // 关键配置：编译后终端获得焦点
+                "panel": "dedicated",  // 为任务创建专用终端面板
+                "showReuseMessage": false,
+                "clear": true
+            }
+        },
+        {
+            "label": "Build Multi-File Project",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-g",
+                "-Wall",
+                "-I",
+                "${workspaceFolder}",
+                "${workspaceFolder}/*.c",
+                "-o",
+                "${workspaceFolder}/bin/${fileBasenameNoExtension}",
+                "-pthread",
+                "ldl",
+                "-luring"
+            ],
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "编译所有C文件（自动处理C++）",
+            "options": {
+                "shell": {
+                    "executable": "/bin/bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true, // 关键配置：编译后终端获得焦点
+                "panel": "dedicated",  // 为任务创建专用终端面板
+                "showReuseMessage": false,
+                "clear": true
+            }
+        },
+        {
+            "type": "cppbuild",
+            "label": "C/C++: g++ 生成活动文件",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${file}",
+                "-o",
+                "${workspaceFolder}/bin/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "调试器生成的任务。",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true, // 关键配置：编译后终端获得焦点
+                "panel": "dedicated",  // 为任务创建专用终端面板
+                "showReuseMessage": false,
+                "clear": true
+            }
+        }
+    ]
+}
