@@ -14,7 +14,7 @@ ALL: $(target)
 $(target): %: %.c
 	$(CC) $(CFLAGS) $< -o $@
 
-# 支持 make foo 方式（只编译指定的源文件 foo.c）
+# 支持 make foo 方式()
 %.c:
 	$(MAKE) $(basename $@)
 
