@@ -7,7 +7,10 @@
 // 子线程的主体函数
 void *tfn(void *arg)
 {
-    printf("tfn: pid = %d, pthread_id = %lu\n", getpid(), pthread_self());
+    while (1) {
+        printf("tfn: pid = %d, pthread_id = %lu\n", getpid(), pthread_self());
+        sleep(1);
+    }
     return NULL;
 }
 
@@ -19,9 +22,15 @@ int main(int argc, char *argv[])
     if (ret != 0) {
         fprintf(stderr, "pthread_create err: %s\n", strerror(ret));
     }
+    sleep(5);
+
+    // 杀死子线程
+    pthread_cancel(tid);
+    if (ret != 0) {
+        fprintf(stderr, "pthread_cancel err: %s\n", strerror(ret));
+    }
 
     printf("main: pid = %d, pthread_id = %lu\n", getpid(), pthread_self());
-    // sleep(1);  // 给子线程执行时间
     pthread_exit((void *)0);  // 退出主线程
 
     return 0;  // 释放进程地址空间
