@@ -18,9 +18,9 @@ void *tfn2(void *arg) {
 // 线程函数3：无限循环，等待被取消
 void *tfn3(void *arg) {
     while (1) {
-        printf("thread 3: I'm going to die in 3 seconds ...\n");
-        sleep(1);
-        // pthread_testcancel(); // 取消点（若启用，可让线程在取消点响应取消）
+        // printf("thread 3: I'm going to die in 3 seconds ...\n");
+        // sleep(1);
+        pthread_testcancel(); // 取消点（若启用，可让线程在取消点响应取消）
     }
     return (void *)666;  // 实际不会执行到，因线程会被取消
 }
