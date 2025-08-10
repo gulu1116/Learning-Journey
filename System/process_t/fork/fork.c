@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     } else if (pid > 0) {
         // 父进程
         printf("This is a parent process: %d, child pid: %d, my parent pid: %d\n", getpid(), pid, getppid());
-        sleep(1)
+        sleep(1);
     }
 
     printf("==================after fork====================\n");
