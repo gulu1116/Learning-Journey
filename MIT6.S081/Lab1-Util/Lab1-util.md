@@ -4,7 +4,7 @@
 **1. 切换到util分支：**
 
 ```bash
-cd xv6-riscv-riscv/
+cd xv6-labs-2020/
 git checkout util
 ```
 
