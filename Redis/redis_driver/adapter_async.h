@@ -31,33 +31,56 @@ static void redisWriteHandler(int fd, int events, void *privdata) {
     redisAsyncHandleWrite(re->ctx);
 }
 
+// static void redisEventUpdate(void *privdata, int flag, int remove) {
+//     redis_event_t *re = (redis_event_t *)privdata;
+//     reactor_t *r = re->e.r;
+//     int prevMask = re->mask;
+//     int enable = 0;
+//     if (remove) {
+//         if ((re->mask & flag) == 0)
+//             return ;
+//         re->mask &= ~flag;
+//         enable = 0;
+//     } else {
+//         if (re->mask & flag)
+//             return ;
+//         re->mask |= flag;
+//         enable = 1;
+//     }
+//     int fd = re->ctx->c.fd;
+//     if (re->mask == 0) {
+//         del_event(r, &re->e);
+//     } else if (prevMask == 0) {
+//         add_event(r, re->mask, &re->e);
+//     } else {
+//         if (flag & EPOLLIN) {
+//             enable_event(r, &re->e, enable, 0);
+//         } else if (flag & EPOLLOUT) {
+//             enable_event(r, &re->e, 0, enable);
+//         }
+//     }
+// }
+
 static void redisEventUpdate(void *privdata, int flag, int remove) {
     redis_event_t *re = (redis_event_t *)privdata;
     reactor_t *r = re->e.r;
     int prevMask = re->mask;
-    int enable = 0;
     if (remove) {
         if ((re->mask & flag) == 0)
-            return ;
+            return;
         re->mask &= ~flag;
-        enable = 0;
     } else {
         if (re->mask & flag)
-            return ;
+            return;
         re->mask |= flag;
-        enable = 1;
     }
-    int fd = re->ctx->c.fd;
-    if (re->mask == 0) {
-        del_event(r, &re->e);
-    } else if (prevMask == 0) {
+
+    if (prevMask == 0 && re->mask != 0) {
         add_event(r, re->mask, &re->e);
+    } else if (re->mask == 0 && prevMask != 0) {
+        del_event(r, &re->e);
     } else {
-        if (flag & EPOLLIN) {
-            enable_event(r, &re->e, enable, 0);
-        } else if (flag & EPOLLOUT) {
-            enable_event(r, &re->e, 0, enable);
-        }
+        enable_event(r, &re->e, (re->mask & EPOLLIN) != 0, (re->mask & EPOLLOUT) != 0);
     }
 }
 

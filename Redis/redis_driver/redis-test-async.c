@@ -1,4 +1,6 @@
 
+// #define _POSIX_C_SOURCE 199309L
+
 #include <hiredis/hiredis.h>
 #include <hiredis/async.h>
 #include <time.h>
@@ -72,7 +74,7 @@ int main(int argc, char **argv) {
     for (int i = 0; i < num; i++) {
         redisAsyncCommand(c, getCallback, "count", "INCR counter");
     }
-    
+
     eventloop(R);
 
     release_reactor(R);
