@@ -1,0 +1,28 @@
+20634:C 08 Oct 2025 06:18:08.566 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+20634:C 08 Oct 2025 06:18:08.567 # Redis version=6.2.19, bits=64, commit=00000000, modified=0, pid=20634, just started
+20634:C 08 Oct 2025 06:18:08.567 # Configuration loaded
+20634:M 08 Oct 2025 06:18:08.567 * monotonic clock: POSIX clock_gettime
+20634:M 08 Oct 2025 06:18:08.568 * No cluster configuration found, I'm 6718fa1eac75f61431a0ad9942887e605337cf1c
+20634:M 08 Oct 2025 06:18:08.570 * Running mode=cluster, port=7005.
+20634:M 08 Oct 2025 06:18:08.570 # Server initialized
+20634:M 08 Oct 2025 06:18:08.570 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+20634:M 08 Oct 2025 06:18:08.571 * Ready to accept connections
+20634:M 08 Oct 2025 06:24:26.988 # configEpoch set to 5 via CLUSTER SET-CONFIG-EPOCH
+20634:M 08 Oct 2025 06:24:27.180 # IP address for this node updated to 127.0.0.1
+20634:S 08 Oct 2025 06:24:27.995 * Before turning into a replica, using my own master parameters to synthesize a cached master: I may be able to synchronize with the new master with just a partial transfer.
+20634:S 08 Oct 2025 06:24:27.995 * Connecting to MASTER 127.0.0.1:7002
+20634:S 08 Oct 2025 06:24:27.995 * MASTER <-> REPLICA sync started
+20634:S 08 Oct 2025 06:24:27.995 # Cluster state changed: ok
+20634:S 08 Oct 2025 06:24:27.996 * Non blocking connect for SYNC fired the event.
+20634:S 08 Oct 2025 06:24:27.998 * Master replied to PING, replication can continue...
+20634:S 08 Oct 2025 06:24:28.000 * Trying a partial resynchronization (request 4bf9bf0769528ba7dd1b2c04f3c364a9e05ebf2a:1).
+20634:S 08 Oct 2025 06:24:28.010 * Full resync from master: c2958de6aaca4e0269c04b9cd289bd2e62310c8e:0
+20634:S 08 Oct 2025 06:24:28.010 * Discarding previously cached master state.
+20634:S 08 Oct 2025 06:24:28.091 * MASTER <-> REPLICA sync: receiving 176 bytes from master to disk
+20634:S 08 Oct 2025 06:24:28.091 * MASTER <-> REPLICA sync: Flushing old data
+20634:S 08 Oct 2025 06:24:28.091 * MASTER <-> REPLICA sync: Loading DB in memory
+20634:S 08 Oct 2025 06:24:28.092 * Loading RDB produced by version 6.2.19
+20634:S 08 Oct 2025 06:24:28.092 * RDB age 0 seconds
+20634:S 08 Oct 2025 06:24:28.092 * RDB memory usage when created 2.59 Mb
+20634:S 08 Oct 2025 06:24:28.092 # Done loading RDB, keys loaded: 0, keys expired: 0.
+20634:S 08 Oct 2025 06:24:28.092 * MASTER <-> REPLICA sync: Finished with success

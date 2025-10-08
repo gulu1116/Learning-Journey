@@ -1,0 +1,21 @@
+20616:C 08 Oct 2025 06:18:08.551 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+20616:C 08 Oct 2025 06:18:08.551 # Redis version=6.2.19, bits=64, commit=00000000, modified=0, pid=20616, just started
+20616:C 08 Oct 2025 06:18:08.551 # Configuration loaded
+20616:M 08 Oct 2025 06:18:08.552 * monotonic clock: POSIX clock_gettime
+20616:M 08 Oct 2025 06:18:08.553 * No cluster configuration found, I'm aadb5269f1430813a97b82c9f28fe2a7981be320
+20616:M 08 Oct 2025 06:18:08.556 * Running mode=cluster, port=7002.
+20616:M 08 Oct 2025 06:18:08.557 # Server initialized
+20616:M 08 Oct 2025 06:18:08.557 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+20616:M 08 Oct 2025 06:18:08.558 * Ready to accept connections
+20616:M 08 Oct 2025 06:24:26.986 # configEpoch set to 2 via CLUSTER SET-CONFIG-EPOCH
+20616:M 08 Oct 2025 06:24:27.180 # IP address for this node updated to 127.0.0.1
+20616:M 08 Oct 2025 06:24:28.005 * Replica 127.0.0.1:7005 asks for synchronization
+20616:M 08 Oct 2025 06:24:28.005 * Partial resynchronization not accepted: Replication ID mismatch (Replica asked for '4bf9bf0769528ba7dd1b2c04f3c364a9e05ebf2a', my replication IDs are '5376a9915825d174e0d723248b4b19ea06f87b86' and '0000000000000000000000000000000000000000')
+20616:M 08 Oct 2025 06:24:28.005 * Replication backlog created, my new replication IDs are 'c2958de6aaca4e0269c04b9cd289bd2e62310c8e' and '0000000000000000000000000000000000000000'
+20616:M 08 Oct 2025 06:24:28.005 * Starting BGSAVE for SYNC with target: disk
+20616:M 08 Oct 2025 06:24:28.006 * Background saving started by pid 32898
+32898:C 08 Oct 2025 06:24:28.013 * DB saved on disk
+32898:C 08 Oct 2025 06:24:28.014 * RDB: 0 MB of memory used by copy-on-write
+20616:M 08 Oct 2025 06:24:28.091 * Background saving terminated with success
+20616:M 08 Oct 2025 06:24:28.091 * Synchronization with replica 127.0.0.1:7005 succeeded
+20616:M 08 Oct 2025 06:24:32.024 # Cluster state changed: ok
