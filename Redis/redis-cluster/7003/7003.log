@@ -19,3 +19,7 @@
 20622:M 08 Oct 2025 06:24:28.083 * Background saving terminated with success
 20622:M 08 Oct 2025 06:24:28.084 * Synchronization with replica 127.0.0.1:7006 succeeded
 20622:M 08 Oct 2025 06:24:32.016 # Cluster state changed: ok
+20622:M 08 Oct 2025 08:07:50.409 # Disconnecting timedout replica (streaming sync): 127.0.0.1:7006
+20622:M 08 Oct 2025 08:07:50.409 # Connection with replica 127.0.0.1:7006 lost.
+20622:M 08 Oct 2025 08:07:50.460 * Replica 127.0.0.1:7006 asks for synchronization
+20622:M 08 Oct 2025 08:07:50.460 * Partial resynchronization request from 127.0.0.1:7006 accepted. Sending 0 bytes of backlog starting from offset 5699.

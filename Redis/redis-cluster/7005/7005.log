@@ -26,3 +26,17 @@
 20634:S 08 Oct 2025 06:24:28.092 * RDB memory usage when created 2.59 Mb
 20634:S 08 Oct 2025 06:24:28.092 # Done loading RDB, keys loaded: 0, keys expired: 0.
 20634:S 08 Oct 2025 06:24:28.092 * MASTER <-> REPLICA sync: Finished with success
+20634:S 08 Oct 2025 07:18:09.077 * 1 changes in 3600 seconds. Saving...
+20634:S 08 Oct 2025 07:18:09.079 * Background saving started by pid 37080
+37080:C 08 Oct 2025 07:18:09.081 * DB saved on disk
+37080:C 08 Oct 2025 07:18:09.082 * RDB: 0 MB of memory used by copy-on-write
+20634:S 08 Oct 2025 07:18:09.179 * Background saving terminated with success
+20634:S 08 Oct 2025 08:07:50.059 # Connection with master lost.
+20634:S 08 Oct 2025 08:07:50.060 * Caching the disconnected master state.
+20634:S 08 Oct 2025 08:07:50.060 * Reconnecting to MASTER 127.0.0.1:7002
+20634:S 08 Oct 2025 08:07:50.064 * MASTER <-> REPLICA sync started
+20634:S 08 Oct 2025 08:07:50.065 * Non blocking connect for SYNC fired the event.
+20634:S 08 Oct 2025 08:07:50.124 * Master replied to PING, replication can continue...
+20634:S 08 Oct 2025 08:07:50.124 * Trying a partial resynchronization (request c2958de6aaca4e0269c04b9cd289bd2e62310c8e:5755).
+20634:S 08 Oct 2025 08:07:50.125 * Successful partial resynchronization with master.
+20634:S 08 Oct 2025 08:07:50.125 * MASTER <-> REPLICA sync: Master accepted a Partial Resynchronization.

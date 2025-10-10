@@ -19,3 +19,12 @@
 20616:M 08 Oct 2025 06:24:28.091 * Background saving terminated with success
 20616:M 08 Oct 2025 06:24:28.091 * Synchronization with replica 127.0.0.1:7005 succeeded
 20616:M 08 Oct 2025 06:24:32.024 # Cluster state changed: ok
+20616:M 08 Oct 2025 07:24:29.049 * 1 changes in 3600 seconds. Saving...
+20616:M 08 Oct 2025 07:24:29.050 * Background saving started by pid 37176
+37176:C 08 Oct 2025 07:24:29.053 * DB saved on disk
+37176:C 08 Oct 2025 07:24:29.054 * RDB: 0 MB of memory used by copy-on-write
+20616:M 08 Oct 2025 07:24:29.151 * Background saving terminated with success
+20616:M 08 Oct 2025 08:07:50.020 # Disconnecting timedout replica (streaming sync): 127.0.0.1:7005
+20616:M 08 Oct 2025 08:07:50.056 # Connection with replica 127.0.0.1:7005 lost.
+20616:M 08 Oct 2025 08:07:50.124 * Replica 127.0.0.1:7005 asks for synchronization
+20616:M 08 Oct 2025 08:07:50.125 * Partial resynchronization request from 127.0.0.1:7005 accepted. Sending 0 bytes of backlog starting from offset 5755.
