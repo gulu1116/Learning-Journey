@@ -1,0 +1,17 @@
+.vscode
+/jsoncpp_test/CMakeFiles/
+/cjson_test/CMakeFiles/
+/rapidjson_test/CMakeFiles/
+**/CMakeFiles/
+/jsoncpp_test/cmake_install.cmake
+/jsoncpp_test/CMakeCache.txt
+/jsoncpp_test/Makefile
+/jsoncpp_test/jsoncpp_speed
+/cjson_test/cmake_install.cmake
+/cjson_test/CMakeCache.txt
+/cjson_test/Makefile
+/cjson_test/cjson_speed
+/rapidjson_test/cmake_install.cmake
+/rapidjson_test/CMakeCache.txt
+/rapidjson_test/Makefile
+/rapidjson_test/rapidjson_speed
